@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+        <title>MetVUW Overlays</title>
+        <script src="js/prototype.js" type="text/javascript"></script>
+        <script src="js/scriptaculous.js" type="text/javascript"></script>
+        <script src="js/metvuw.js" type="text/javascript"></script>
+
+<style type="text/css">
+    div.slider {
+        width: 20px;
+        margin: 10px 0;
+        background-color: #aaa;
+        height: 600px;
+        position: relative;
+        float: left;
+    }
+    div.slider div.handle {
+        width: 15px;
+        height: 30px;
+        cursor: move;
+        position: absolute;
+        background: transparent url(img/slide_arrow_vertical.gif) no-repeat scroll 0% 0%;
+    }
+    div#label {
+        width: 800px;
+        text-align: center;
+    }
+</style>
+    </head>
+
+    <body>
+        <div id="label">
+        </div>
+        <div>
+            <div id="slider" class="slider">
+                <div id="handle" class="handle"></div>
+            </div>
+            <img width="68" height="600" border="0" src="img/scale.gif" />
+            <img width="711" height="600" border="0" id="map" alt="Map" src="img/1px.gif" />
+        </div>
+    </body>
+</html>
