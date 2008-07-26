@@ -8,27 +8,24 @@ window.location.search.replace(
 
 var Maps = {
     init: function(timestamp, region) {
-        Maps.timestamp = timestamp;
-        Maps.region = region;
-        var load = function() {
-            Maps.images = new Object();
-            $R(1,30).each(
-                function(value) {
-                    var i = document.createElement('img');
-                    i.src = Maps.url_for(value);
-                    Maps.images[value] = i;
-                }
-            );
-            Maps.slider = new Control.Slider('handle', 'slider', {
-                range: $R(1, 30),
-                values: $R(1, 30),
-                sliderValue: 1,
-                axis: 'vertical',
-                onSlide: Maps.change_to
-            });
-            Maps.change_to(1);
-        };
-        Event.observe(window, 'load', load);
+        this.timestamp = timestamp;
+        this.region = region;
+        this.images = new Object();
+        $R(1,30).each(
+            function(value) {
+                var i = document.createElement('img');
+                i.src = Maps.url_for(value);
+                Maps.images[value] = i;
+            }
+        );
+        this.slider = new Control.Slider('handle', 'slider', {
+            range: $R(1, 30),
+            values: $R(1, 30),
+            sliderValue: 1,
+            axis: 'vertical',
+            onSlide: this.change_to
+        });
+        this.change_to(1);
     },
 
     offset_for: function(value) {
@@ -40,7 +37,7 @@ var Maps = {
     },
 
     url_for: function(value) {
-        return "http://www.metvuw.com/forecast/" + Maps.timestamp + "/rain-" + Maps.region + "-" + Maps.timestamp + "-" + Maps.offset_for(value) + ".gif";
+        return "http://www.metvuw.com/forecast/" + this.timestamp + "/rain-" + this.region + "-" + this.timestamp + "-" + this.offset_for(value) + ".gif";
     },
 
     change_to: function(value) {
@@ -49,4 +46,20 @@ var Maps = {
     }
 };
 
-Maps.init(query_vars["timestamp"], query_vars["region"]);
+
+var timestamp = query_vars["timestamp"];
+var region = query_vars["region"];
+if (timestamp == "") {
+     Maps.init(timestamp, region);
+}
+else {
+    new Ajax.Request('timestamps.json', {
+      method:'get',
+      onSuccess: function(transport){
+         var text = transport.responseText;
+         var json = text.evalJSON();
+         timestamp = json[region];
+         Maps.init(timestamp, region);
+       }
+    });
+}
