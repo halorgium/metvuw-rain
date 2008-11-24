@@ -8,7 +8,7 @@ require 'json'
 hash = {}
 regions = %w( nz nzni nzsi )
 regions.each do |r|
-  h = Hpricot(open('http://metvuw.com/forecast/forecast1.php?type=rain&region=nzni&tim=06'))
+  h = Hpricot(open("http://metvuw.com/forecast/forecast1.php?type=rain&region=#{r}&tim=06"))
   image = (h / 'table//img').find {|i| i.attributes["src"] =~ /\d\d/}
   timestamp = image.attributes["src"].split('/')[1]
   hash[r] = timestamp
