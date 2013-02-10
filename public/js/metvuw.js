@@ -49,8 +49,10 @@ var Maps = {
 
 var timestamp = query_vars["timestamp"];
 var region = query_vars["region"];
-if (timestamp == "") {
-     Maps.init(timestamp, region);
+if (timestamp !== null || timestamp !== "") {
+    document.observe('dom:loaded', function() {
+        Maps.init(timestamp, region);
+    });
 }
 else {
     new Ajax.Request('timestamps.json', {
