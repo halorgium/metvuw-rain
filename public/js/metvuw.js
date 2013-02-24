@@ -40,8 +40,9 @@ $(function() {
     var timestamp = query_vars["timestamp"];
     var region = query_vars["region"];
     if (timestamp === undefined || timestamp === "") {
-        var date = new Date;
-        timestamp = $.sprintf("%04d%02d%02d00", date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate());
+        var date = new Date(new Date - 6 * 60 * 60 * 1000);
+        var hour = Math.floor(date.getUTCHours() / 6) * 6;
+        timestamp = $.sprintf("%04d%02d%02d%02d", date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate(), hour);
     }
     Maps.init(timestamp, region);
 });
