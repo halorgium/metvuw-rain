@@ -1,19 +1,10 @@
---- 
-dependencies: 
-  json: 
-    group: 
-    - :default
-    version: = 1.1.3
-  hpricot: 
-    group: 
-    - :default
-    version: = 0.6
-specs: 
-- hpricot: 
-    version: "0.6"
-- json: 
-    version: 1.1.3
-hash: 8a9a2c3e50477f5bd9c191859f144fbc5b3cb037
-sources: 
-- Rubygems: 
-    uri: http://rubygems.org
+GEM
+  remote: http://rubygems.org/
+  specs:
+    rack (1.5.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  rack
