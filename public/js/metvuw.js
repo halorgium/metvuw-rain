@@ -36,13 +36,12 @@ var Maps = {
     }
 };
 
-var timestamp = query_vars["timestamp"];
-var region = query_vars["region"];
-if (timestamp !== null || timestamp !== "") {
-    $(function() {
-        Maps.init(timestamp, region);
-    });
-}
-else {
-    /* TODO: choose the latest timestamp */
-}
+$(function() {
+    var timestamp = query_vars["timestamp"];
+    var region = query_vars["region"];
+    if (timestamp === undefined || timestamp === "") {
+        var date = new Date;
+        timestamp = $.sprintf("%04d%02d%02d00", date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate());
+    }
+    Maps.init(timestamp, region);
+});
