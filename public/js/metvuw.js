@@ -10,56 +10,39 @@ var Maps = {
     init: function(timestamp, region) {
         this.timestamp = timestamp;
         this.region = region;
-        this.images = new Object();
-        $R(1,30).each(
-            function(value) {
-                var i = document.createElement('img');
-                i.src = Maps.url_for(value);
-                Maps.images[value] = i;
-            }
-        );
-        this.slider = new Control.Slider('handle', 'slider', {
-            range: $R(1, 30),
-            values: $R(1, 30),
-            sliderValue: 1,
-            axis: 'vertical',
-            onSlide: this.change_to
+        $('#timestamp').text(timestamp);
+        $('#slider').slider({
+            min: -180,
+            max: 0,
+            value: 0,
+            step: 6,
+            orientation: 'vertical',
+            slide: this.change_to
         });
-        this.change_to(1);
-    },
-
-    offset_for: function(value) {
-        var offset = (value * 6).toString();
-        if (offset.length < 2) {
-            offset = "0" + offset;
+        var slider = $('#slider').slider("option");
+        for (var offset = slider.min; offset <= slider.max; offset += slider.step) {
+            $("<img>").attr("src", Maps.url_for(-offset));
         }
-        return offset;
+        this.change_to({}, slider);
     },
 
-    url_for: function(value) {
-        return "http://www.metvuw.com/forecast/" + this.timestamp + "/rain-" + this.region + "-" + this.timestamp + "-" + this.offset_for(value) + ".gif";
+    url_for: function(offset) {
+        return $.sprintf("http://www.metvuw.com/forecast/%s/rain-%s-%s-%02d.gif", this.timestamp, this.region, this.timestamp, offset);
     },
 
-    change_to: function(value) {
-        $('label').innerHTML = "Offset from " + Maps.timestamp + " is " + Maps.offset_for(value);
-        $('map').src = Maps.images[value].src;
+    change_to: function(event, ui) {
+        $('#offset').text(-ui.value);
+        $('#map').attr("src", Maps.url_for(-ui.value));
     }
 };
 
-
-var timestamp = query_vars["timestamp"];
-var region = query_vars["region"];
-if (timestamp == "") {
-     Maps.init(timestamp, region);
-}
-else {
-    new Ajax.Request('timestamps.json', {
-      method:'get',
-      onSuccess: function(transport){
-         var text = transport.responseText;
-         var json = text.evalJSON();
-         timestamp = json[region];
-         Maps.init(timestamp, region);
-       }
-    });
-}
+$(function() {
+    var timestamp = query_vars["timestamp"];
+    var region = query_vars["region"];
+    if (timestamp === undefined || timestamp === "") {
+        var date = new Date(new Date - 6 * 60 * 60 * 1000);
+        var hour = Math.floor(date.getUTCHours() / 6) * 6;
+        timestamp = $.sprintf("%04d%02d%02d%02d", date.getUTCFullYear(), date.getUTCMonth() + 1, date.getUTCDate(), hour);
+    }
+    Maps.init(timestamp, region);
+});
