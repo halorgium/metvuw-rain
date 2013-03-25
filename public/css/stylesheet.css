@@ -21,7 +21,7 @@
     cursor: move;
     position: absolute;
     border: 0;
-    background: transparent url(img/slide_arrow_vertical.gif) no-repeat scroll 0% 0%;
+    background: transparent url(../img/slide_arrow_vertical.gif) no-repeat scroll 0% 0%;
 }
 #label {
     width: 800px;
