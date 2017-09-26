@@ -13,8 +13,8 @@ var Maps = {
         $('#timestamp').text(timestamp);
         $('#slider').slider({
             min: -180,
-            max: 0,
-            value: 0,
+            max: -6,
+            value: -6,
             step: 6,
             orientation: 'vertical',
             slide: this.change_to
@@ -27,7 +27,7 @@ var Maps = {
     },
 
     url_for: function(offset) {
-        return $.sprintf("http://www.metvuw.com/forecast/%s/rain-%s-%s-%02d.gif", this.timestamp, this.region, this.timestamp, offset);
+        return $.sprintf("http://www.metvuw.com/forecast/%s/rain-%s-%s-%03d.gif", this.timestamp, this.region, this.timestamp, offset);
     },
 
     change_to: function(event, ui) {
